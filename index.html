@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Hello to TOEIC – เรียนอังกฤษจากศูนย์ถึงสอบผ่าน</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@500;700&family=Sarabun:wght@400;600&display=swap">
+<style>
+:root{--bg:#f4f7fb;--card:#fff;--ink:#14213d;--mut:#5a6782;--line:#d5deec;--pri:#1f4fd8;--acc:#ffb703;--ok:#168a4a;--bad:#c62f3d;
+box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1626;--card:#16213a;--ink:#eaf0fc;--mut:#9fb0d0;--line:#2a3a5c;--pri:#7ea2ff;--ok:#4cc784;--bad:#ff7a86}}
+:root[data-theme="dark"]{--bg:#0e1626;--card:#16213a;--ink:#eaf0fc;--mut:#9fb0d0;--line:#2a3a5c;--pri:#7ea2ff;--ok:#4cc784;--bad:#ff7a86}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 Sarabun,"Noto Sans Thai",sans-serif}
+h1,h2,h3{font-family:Prompt,Sarabun,sans-serif;line-height:1.25;margin:0}
+main{max-width:760px;margin:0 auto;padding:20px 16px 64px}
+.hero{padding:28px 0 8px}
+.hero h1{font-size:clamp(34px,8vw,56px)}
+.hero p{color:var(--mut);max-width:34em}
+.path{display:flex;gap:6px;overflow-x:auto;padding:14px 0;margin:0 -16px;padding-left:16px;padding-right:16px}
+.path button{flex:0 0 auto;min-width:112px;text-align:left;background:var(--card);border:2px solid var(--line);border-radius:10px;padding:10px 12px;color:var(--ink);font:inherit;cursor:pointer}
+.path button b{display:block;font-family:Prompt;font-size:18px}
+.path button small{color:var(--mut)}
+.path button[aria-selected="true"]{border-color:var(--pri);box-shadow:inset 0 -5px 0 var(--acc)}
+.path button.done b::after{content:" ✓";color:var(--ok)}
+button:focus-visible{outline:3px solid var(--pri);outline-offset:2px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:20px}
+.goal{color:var(--mut);margin:4px 0 16px}
+.tabs{display:flex;gap:8px;margin:14px 0}
+.tabs button{flex:1;padding:10px;border-radius:8px;border:1px solid var(--line);background:transparent;color:var(--ink);font:600 16px Sarabun;cursor:pointer}
+.tabs button[aria-selected="true"]{background:var(--pri);color:#fff;border-color:var(--pri)}
+.lesson{border-top:1px solid var(--line);padding:16px 0}
+.lesson h3{font-size:20px;margin-bottom:6px}
+.ex{background:var(--bg);border-left:4px solid var(--acc);padding:6px 12px;margin:8px 0;border-radius:0 8px 8px 0}
+.ex em{display:block;color:var(--mut);font-style:normal;font-size:15px}
+.vocab{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+.vocab div{border:1px solid var(--line);border-radius:8px;padding:8px 12px}
+.vocab b{font-family:Prompt}
+.vocab span{display:block;color:var(--mut);font-size:15px}
+.q{margin:18px 0}
+.q p{margin:0 0 8px;font-weight:600}
+.opt{display:block;width:100%;text-align:left;margin:6px 0;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);font:inherit;cursor:pointer}
+.opt.ok{border-color:var(--ok);background:color-mix(in srgb,var(--ok) 15%,transparent)}
+.opt.bad{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 15%,transparent)}
+.why{font-size:15px;color:var(--mut);margin:4px 0 0}
+.score{font:700 22px Prompt;margin-top:12px}
+.cta{background:var(--pri);color:#fff;border:0;border-radius:8px;padding:10px 18px;font:600 16px Sarabun;cursor:pointer;margin-top:8px}
+.cta[data-theme-toggle]{background:transparent;color:var(--mut);border:1px solid var(--line);padding:4px 12px;font-size:14px;margin:0}
+.top{display:flex;justify-content:flex-end}
+</style>
+</head>
+<body>
+<main>
+<div class="top"><button class="cta" data-theme-toggle onclick="toggleTheme()">สลับโหมดสว่าง/มืด</button></div>
+<section class="hero">
+<h1>จาก Hello<br>ถึง TOEIC</h1>
+<p>เรียนอังกฤษเป็นขั้น 5 ระดับ ตั้งแต่ไม่มีพื้นฐานจนถึงเป้าหมายสอบ TOEIC 785+ แต่ละระดับมีบทเรียน คำศัพท์ และแบบทดสอบสั้น ๆ ที่เก็บคะแนนสูงสุดของคุณไว้</p>
+</section>
+<nav class="path" id="path" role="tablist" aria-label="ระดับการเรียน"></nav>
+<section class="panel" id="panel"></section>
+</main>
+<script>
+const L=[
+{id:"a1",n:"ระดับ 1",s:"A1 · เริ่มต้น",goal:"เป้าหมาย: แนะนำตัวและประโยคพื้นฐาน (TOEIC ประมาณ 0–250)",
+lessons:[
+{t:"Verb to be: am / is / are",d:"I ใช้ am, he/she/it ใช้ is, you/we/they ใช้ are ปฏิเสธเติม not",ex:[["I am a student.","ฉันเป็นนักเรียน"],["She is not at home.","เธอไม่ได้อยู่บ้าน"],["Are you ready?","คุณพร้อมไหม"]]},
+{t:"Present simple: เรื่องที่ทำประจำ",d:"ประธาน he/she/it ต้องเติม s/es ที่กริยา ปฏิเสธใช้ do not / does not",ex:[["I work in an office.","ฉันทำงานในออฟฟิศ"],["He works at a bank.","เขาทำงานที่ธนาคาร"],["She does not drink coffee.","เธอไม่ดื่มกาแฟ"]]}],
+vocab:[["name","ชื่อ"],["family","ครอบครัว"],["work","ทำงาน"],["every day","ทุกวัน"],["Where","ที่ไหน"],["buy","ซื้อ"]],
+quiz:[["She ___ a teacher.",["am","is","are"],1,"she ใช้ is"],["He ___ English every day.",["study","studies","studying"],1,"he + กริยาเติม s (study → studies)"],["They ___ not at school.",["is","am","are"],2,"they ใช้ are"],["I ___ like tea.",["do not","does not","not"],0,"I ใช้ do not"]]},
+{id:"a2",n:"ระดับ 2",s:"A2 · พื้นฐาน",goal:"เป้าหมาย: เล่าอดีต บอกสถานที่ และอีเมลสั้น ๆ (TOEIC 250–400)",
+lessons:[
+{t:"Past simple: เหตุการณ์ที่จบแล้ว",d:"กริยาปกติเติม ed ส่วนกริยาไม่ปกติต้องจำ เช่น go → went ปฏิเสธและคำถามใช้ did + กริยาช่อง 1",ex:[["I visited Chiang Mai last year.","ฉันไปเชียงใหม่เมื่อปีที่แล้ว"],["We went to the meeting.","เราไปประชุม"],["Did you call him?","คุณโทรหาเขาไหม"]]},
+{t:"in / on / at กับเวลาและสถานที่",d:"at + เวลาเป๊ะ (at 9 a.m.), on + วัน (on Monday), in + เดือน/ปี (in May)",ex:[["The class starts at 8.","คลาสเริ่มตอน 8 โมง"],["See you on Friday.","เจอกันวันศุกร์"],["He was born in 1995.","เขาเกิดปี 1995"]]}],
+vocab:[["appointment","นัดหมาย"],["schedule","ตารางเวลา"],["arrive","มาถึง"],["leave","ออกไป"],["receive","ได้รับ"],["order","สั่งซื้อ"]],
+quiz:[["Yesterday I ___ to the market.",["go","went","goed"],1,"go เป็นกริยาไม่ปกติ → went"],["___ you finish the report?",["Did","Do","Are"],0,"อดีตใช้ Did"],["The meeting is ___ Monday.",["in","at","on"],2,"วันใช้ on"],["She arrived ___ 7 p.m.",["at","on","in"],0,"เวลาเป๊ะใช้ at"]]},
+{id:"b1",n:"ระดับ 3",s:"B1 · กลาง",goal:"เป้าหมาย: สื่อสารในงานทั่วไป อ่านประกาศและอีเมล (TOEIC 400–600)",
+lessons:[
+{t:"Present perfect: have/has + V3",d:"ใช้กับประสบการณ์ หรือเหตุการณ์ที่เริ่มในอดีตและเกี่ยวกับปัจจุบัน มักมี for, since, already, yet",ex:[["I have worked here for three years.","ฉันทำงานที่นี่มาสามปีแล้ว"],["She has already sent the file.","เธอส่งไฟล์แล้ว"]]},
+{t:"Modal verbs ในที่ทำงาน",d:"must = จำเป็น, should = ควร, can/could = ทำได้/ขออนุญาต, may = อาจ/ขออย่างสุภาพ",ex:[["Employees must wear ID badges.","พนักงานต้องติดบัตร"],["Could you send me the schedule?","ช่วยส่งตารางให้ได้ไหม"]]}],
+vocab:[["deadline","กำหนดส่ง"],["attach","แนบ"],["confirm","ยืนยัน"],["invoice","ใบแจ้งหนี้"],["client","ลูกค้า"],["available","ว่าง/มีให้"]],
+quiz:[["We ___ here since 2020.",["work","have worked","worked"],1,"since ใช้ present perfect"],["Visitors ___ sign in at the desk. (กฎบังคับ)",["must","may","could"],0,"must = จำเป็นต้องทำ"],["I have ___ finished the report.",["yet","already","since"],1,"already ในประโยคบอกเล่า"],["___ I borrow your pen?",["Must","May","Did"],1,"ขออนุญาตสุภาพใช้ May"]]},
+{id:"b2",n:"ระดับ 4",s:"B2 · เตรียมสอบ",goal:"เป้าหมาย: TOEIC 600–780 เก่ง Part 5–6 และอ่านเร็วขึ้น",
+lessons:[
+{t:"Part 5: ดูตำแหน่งในประโยคเพื่อเลือกชนิดคำ",d:"หลัง the/a/his ต้องเป็น noun (หรือ adj + noun) หน้ากริยามักเป็น adverb (quickly) หลัง be มักเป็น adjective ฝึกมองคำรอบช่องว่างก่อนดูความหมาย",ex:[["The manager made a quick decision.","quick = adj ขยาย decision"],["She completed the task successfully.","successfully = adverb ขยายกริยา"]]},
+{t:"Passive voice: be + V3",d:"ใช้เมื่อสนใจผลหรือสิ่งที่ถูกกระทำ พบบ่อยในประกาศและเอกสารบริษัท",ex:[["The report was approved by the director.","รายงานได้รับอนุมัติจากผู้อำนวยการ"],["All orders will be shipped on Friday.","ออเดอร์ทั้งหมดจะถูกส่งวันศุกร์"]]},
+{t:"Part 7: เทคนิคอ่านเร็ว",d:"อ่านคำถามก่อน มองหาคำสำคัญ (ชื่อ ตัวเลข วันที่) แล้วสแกนบทความ ข้อ NOT/true ให้ตัดตัวเลือกที่ผิดทีละข้อ",ex:[]}],
+vocab:[["reimburse","คืนเงิน"],["postpone","เลื่อน"],["colleague","เพื่อนร่วมงาน"],["procedure","ขั้นตอน"],["supervisor","หัวหน้างาน"],["renew","ต่ออายุ"]],
+quiz:[["The company made a ___ decision. (ช่องว่างหน้า noun)",["quickly","quick","quicken"],1,"ขยาย noun ใช้ adjective"],["She ___ completed the project.",["success","successful","successfully"],2,"หน้ากริยาใช้ adverb"],["The meeting ___ until next week.",["postponed","was postponed","postpone"],1,"ถูกเลื่อน → passive"],["Please submit your ___ by Friday. (noun)",["apply","applicant","application"],2,"สิ่งที่ส่ง = application"]]},
+{id:"c1",n:"ระดับ 5",s:"TOEIC 785+",goal:"เป้าหมาย: คะแนนสูง จัดการเวลาและกับดักข้อสอบ",
+lessons:[
+{t:"Preposition vs conjunction",d:"despite/because of + noun แต่ although/because + ประโยค (S+V) เป็นกับดักที่ออกบ่อยใน Part 5",ex:[["Despite the rain, the event continued.","แม้ฝนตก งานก็ยังดำเนินต่อ"],["Although it rained, the event continued.","แม้ฝนตก งานก็ยังดำเนินต่อ"]]},
+{t:"บริหารเวลาทั้งฉบับ",d:"Listening 45 นาที Reading 75 นาที (รวม 200 ข้อ) Part 5 ใช้ไม่เกิน 15 วินาทีต่อข้อ ข้อยากให้ข้ามก่อน เหลือเวลาสำหรับ Part 7 ที่คะแนนเยอะ ข้อสอบไม่หักคะแนนเมื่อตอบผิด จึงควรกาให้ครบ",ex:[]}],
+vocab:[["comply with","ปฏิบัติตาม"],["in accordance with","สอดคล้องกับ"],["effective","มีผลบังคับใช้"],["negotiate","เจรจา"],["revenue","รายได้"],["mandatory","บังคับ"]],
+quiz:[["___ the delay, we finished on time.",["Although","Despite","Because"],1,"ตามด้วย noun ใช้ Despite"],["___ he was tired, he kept working.",["Despite","In spite of","Although"],2,"ตามด้วยประโยคใช้ Although"],["Employees must ___ with safety rules.",["comply","complete","compare"],0,"comply with = ปฏิบัติตาม"],["ถ้าไม่รู้คำตอบในข้อสอบ TOEIC ควร...",["เว้นว่าง","เดาให้ครบทุกข้อ","ทำเฉพาะข้อง่าย"],1,"ไม่หักคะแนนเมื่อผิด จึงควรกาให้ครบ"]]}
+];
+let cur=0,tab="learn",best={};
+try{best=JSON.parse(localStorage.getItem("h2t")||"{}")}catch(e){}
+const $=id=>document.getElementById(id);
+function toggleTheme(){const r=document.documentElement,d=getComputedStyle(r).getPropertyValue("--bg").trim()==="#0e1626";r.dataset.theme=d?"light":"dark"}
+function nav(){$("path").innerHTML=L.map((l,i)=>`<button role="tab" aria-selected="${i==cur}" class="${best[l.id]>=3?"done":""}" onclick="cur=${i};tab='learn';render()"><b>${l.n}</b><small>${l.s}</small></button>`).join("")}
+function render(){nav();const l=L[cur];
+let h=`<h2>${l.s}</h2><p class="goal">${l.goal}</p><div class="tabs" role="tablist"><button role="tab" aria-selected="${tab=="learn"}" onclick="tab='learn';render()">บทเรียน</button><button role="tab" aria-selected="${tab=="quiz"}" onclick="tab='quiz';render()">แบบทดสอบ${best[l.id]!=null?` (ดีที่สุด ${best[l.id]}/4)`:""}</button></div>`;
+if(tab=="learn"){
+h+=l.lessons.map(x=>`<div class="lesson"><h3>${x.t}</h3><p>${x.d}</p>${x.ex.map(e=>`<div class="ex">${e[0]}<em>${e[1]}</em></div>`).join("")}</div>`).join("");
+h+=`<div class="lesson"><h3>คำศัพท์สำคัญ</h3><div class="vocab">${l.vocab.map(v=>`<div><b>${v[0]}</b><span>${v[1]}</span></div>`).join("")}</div></div><button class="cta" onclick="tab='quiz';render();scrollTo(0,0)">ทำแบบทดสอบ</button>`;
+}else{
+window.sc=0;window.ans=0;
+h+=l.quiz.map((q,i)=>`<div class="q" id="q${i}"><p>${i+1}. ${q[0]}</p>${q[1].map((o,j)=>`<button class="opt" onclick="pick(${i},${j},this)">${o}</button>`).join("")}<p class="why" hidden></p></div>`).join("")+`<div class="score" id="sc"></div>`;}
+$("panel").innerHTML=h}
+function pick(i,j,b){const q=L[cur].quiz[i],box=$("q"+i);if(box.dataset.done)return;box.dataset.done=1;
+const bs=box.querySelectorAll(".opt");bs[q[2]].classList.add("ok");if(j!=q[2])b.classList.add("bad");else sc++;
+const w=box.querySelector(".why");w.hidden=false;w.textContent=(j==q[2]?"ถูกต้อง: ":"เฉลย: ")+q[3];ans++;
+if(ans==L[cur].quiz.length){const id=L[cur].id;if(best[id]==null||sc>best[id])best[id]=sc;try{localStorage.setItem("h2t",JSON.stringify(best))}catch(e){}
+$("sc").innerHTML=`คะแนน ${sc}/${ans} ${sc>=3?"ผ่านระดับนี้แล้ว":"ลองทบทวนบทเรียนแล้วทำอีกครั้ง"}<br><button class="cta" onclick="${cur<L.length-1&&sc>=3?"cur++;tab='learn'":"tab='quiz'"};render();scrollTo(0,0)">${cur<L.length-1&&sc>=3?"ไประดับถัดไป":"ทำอีกครั้ง"}</button>`;nav()}}
+render();
+</script>
+</body>
+</html>
